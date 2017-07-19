@@ -4,44 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Will It Flood?</title>
-  <link href="css/appstyle2.css" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet"> 
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoip0ve1aHbxpGyC7cQnV6qq7zLNGjAfU&libraries=places&callback=initMap"
     async defer></script>
-  <script type="text/javascript" src="js/test6.js"></script>
+  <script type="text/javascript" src="js/functions.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       // Tooltip only Text
       window.king = 1.0;
 
-
-
-
-
-      jqueryFunction = function () {
-
-
-
-
-        $('.masterTooltip').hover(function () {
-          // Hover over code
-          var title = $(this).attr('title');
-          $(this).data('tipText', title).removeAttr('title');
-          $('<p class="tooltip"></p>')
-            .text(title)
-            .appendTo('body')
-            .fadeIn('slow');
-        }, function () {
-          // Hover out code
-          $(this).attr('title', $(this).data('tipText'));
-          $('.tooltip').remove();
-        }).mousemove(function (e) {
-          var mousex = e.pageX + 20; //Get X coordinates
-          var mousey = e.pageY + 10; //Get Y coordinates
-          $('.tooltip')
-            .css({ top: mousey, left: mousex })
-        });
-      }
 
       $.get("tides/stations.json", function (stations) { window.lats = stations; });
 
