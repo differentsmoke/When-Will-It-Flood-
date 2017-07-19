@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Will It Flood?</title>
-   <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -15,9 +15,9 @@
     $(document).ready(function () {
       // Tooltip only Text
       window.king = 1.0;
-
-
-      $.get("tides/stations.json", function (stations) { window.lats = stations; });
+      $.get("tides/stations.json", function (stations) {
+        window.lats = stations;
+      });
 
     });
 
@@ -33,7 +33,10 @@
 
 
       var map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 25.7823072, lng: -80.3010434 },
+        center: {
+          lat: 25.7823072,
+          lng: -80.3010434
+        },
         zoom: 12
       });
       var input = document.getElementById('pac-input');
@@ -51,7 +54,7 @@
         infowindow.open(map, marker);
       });
 
-      autocomplete.addListener('place_changed', drawCalendar );
+      autocomplete.addListener('place_changed', drawCalendar);
 
       function drawCalendar() {
         infowindow.close();
@@ -95,11 +98,16 @@
         document.getElementById("stationdist").innerHTML = 'Distance to station = ' + miles + ' miles.';
         if (miles > 2) {
           document.getElementById("madlib").style.display = "block";
-          document.getElementById("madlib").insertAdjacentHTML('beforeEnd', 'Your distance to the tide monitoring station is ' + miles + ' miles. The farther you are from the station, the longer it will take flooding from high tides, if any, to reach you.');
-        }
-        else if (miles <= 2) {
+          document.getElementById("madlib").insertAdjacentHTML('beforeEnd',
+            'Your distance to the tide monitoring station is ' + miles +
+            ' miles. The farther you are from the station, the longer it will take flooding from high tides, if any, to reach you.'
+          );
+        } else if (miles <= 2) {
           document.getElementById("madlib").style.display = "block";
-          document.getElementById("madlib").insertAdjacentHTML('beforeEnd', 'Your distance to the tide monitoring station is ' + miles + ' miles. The closer you are to the station, the more likely you are to see flooding around the time of the high tides.');
+          document.getElementById("madlib").insertAdjacentHTML('beforeEnd',
+            'Your distance to the tide monitoring station is ' + miles +
+            ' miles. The closer you are to the station, the more likely you are to see flooding around the time of the high tides.'
+          );
         }
         var passy = "tides/" + best_stn[1] + "_annual.xml";
         loadXMLDoc(passy);
@@ -110,13 +118,12 @@
 
     function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
       var R = 6371; // Radius of the earth in km
-      var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+      var dLat = deg2rad(lat2 - lat1); // deg2rad below
       var dLon = deg2rad(lon2 - lon1);
       var a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        ;
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       var d = R * c; // Distance in km
       return d;
@@ -128,15 +135,15 @@
 
     function madElevate(theElevation) {
       if (theElevation < 3) {
-        document.getElementById("madlib").insertAdjacentHTML('beforeEnd', 'Your elevation of ' + theElevation + ' is low. The likelihood that you will see flooding during the high tides is increased.');
-      }
-
-      else if (theElevation < 8) {
-        document.getElementById("madlib").insertAdjacentHTML('beforeEnd', 'Your elevation of ' + theElevation + ' indicates that the likelihood that you will see flooding during the high tides is average.');
-      }
-
-      else if (theElevation >= 8) {
-        document.getElementById("madlib").insertAdjacentHTML('beforeEnd', 'Your elevation of ' + theElevation + ' is high for south Florida and indicates that the likelihood that you will see flooding during the high tides is decreased.');
+        document.getElementById("madlib").insertAdjacentHTML('beforeEnd', 'Your elevation of ' + theElevation +
+          ' is low. The likelihood that you will see flooding during the high tides is increased.');
+      } else if (theElevation < 8) {
+        document.getElementById("madlib").insertAdjacentHTML('beforeEnd', 'Your elevation of ' + theElevation +
+          ' indicates that the likelihood that you will see flooding during the high tides is average.');
+      } else if (theElevation >= 8) {
+        document.getElementById("madlib").insertAdjacentHTML('beforeEnd', 'Your elevation of ' + theElevation +
+          ' is high for south Florida and indicates that the likelihood that you will see flooding during the high tides is decreased.'
+        );
       }
     }
 
@@ -245,11 +252,6 @@
         alt="CODE FOR MIAMI" /></footer>
   </div>
 
-  <script type="text/javascript">
-    function jsFunction() {
-      jqueryFunction();
-    }
-  </script>
 </body>
 
 </html>
