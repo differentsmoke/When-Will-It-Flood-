@@ -21,8 +21,8 @@ function loadArray(xml) {
     dayminder = 0;
     xmlDoc = xml.responseXML;
 
-    stationname = xmlDoc.getElementsByTagName("stationname")[0].childNodes[0]
-        .nodeValue;
+    stationname = xmlDoc.getElementsByTagName("stationname")[0].textContent;
+    
     document.getElementById("station").innerHTML = stationname;
 
     var months = [[], [], [], [], [], [], [], [], [], [], [], []];
@@ -38,7 +38,6 @@ function loadArray(xml) {
         timey = x[i].getElementsByTagName("time")[0].childNodes[0].nodeValue;
         tidy = x[i].getElementsByTagName("highlow")[0].childNodes[0].nodeValue;
         var daynew = dayme;
-        console.log("MONTH: ", monthme);
 
         if (monthme >= todayMonthNum) {
             var month = months[monthme];
