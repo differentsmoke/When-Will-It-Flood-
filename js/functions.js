@@ -2,81 +2,57 @@
 
 function loadArray(xml) {
     "use strict";
-    var x,
-        i,
-        xmlDoc,
-        dayold,
-        dayminder,
-        stationname,
-        dateme,
-        dayme,
-        monthme,
-        timey,
-        tidy,
-        today,
-        todayMonthNum;
-    today = new Date();
-    todayMonthNum = today.getMonth();
-    dayold = "1";
-    dayminder = 0;
-    xmlDoc = xml.responseXML;
-
-    stationname = xmlDoc.getElementsByTagName("stationname")[0].textContent;
-    
-    document.getElementById("station").innerHTML = stationname;
-
+    var today = new Date();
+    var todayMonthNum = today.getMonth();
+    var xmlDocument = xml.responseXML;
+    var stationname = xmlDocument.querySelector("stationname").textContent;
+    var tides = xmlDocument.querySelectorAll("item");
     var months = [[], [], [], [], [], [], [], [], [], [], [], []];
+    var tideDate,
+        tideDay,
+        tideMonth,
+        tideTime,
+        highTide,
+        month,
+        predInFt,
+        previousDay,
+        currentDay;
 
-    x = xmlDoc.getElementsByTagName("item");
+    for (var i = 0; i < tides.length; i = i + 1) {
+        tideDate = new Date(tides[i].querySelector("date").textContent);
+        tideMonth = tideDate.getMonth();
+        highTide = tides[i].querySelector("highlow").textContent === "H";
 
-    for (i = 0; i < x.length; i = i + 1) {
-        dateme = new Date(
-            x[i].getElementsByTagName("date")[0].childNodes[0].nodeValue
-        );
-        dayme = dateme.getDate();
-        monthme = dateme.getMonth();
-        timey = x[i].getElementsByTagName("time")[0].childNodes[0].nodeValue;
-        tidy = x[i].getElementsByTagName("highlow")[0].childNodes[0].nodeValue;
-        var daynew = dayme;
+        if (tideMonth >= todayMonthNum && highTide) {
+            // If the month is equal or higher than the current month and the value is a high tide.
+            tideDay = tideDate.getDate();
+            tideTime = tides[i].querySelector("time").textContent;
+            predInFt = tides[i].querySelector("pred_in_ft").textContent;
+            month = months[tideMonth];
 
-        if (monthme >= todayMonthNum) {
-            var month = months[monthme];
-            if (tidy.includes("H")) {
-                if (dayold === daynew) {
-                    if (dayminder === 0) {
-                        month.push(dayme);
-                        month.push(timey);
-                        month.push(
-                            x[i].getElementsByTagName("pred_in_ft")[0]
-                                .childNodes[0].nodeValue
-                        );
-                        dayminder = dayminder + 1;
-                    } else if (dayminder > 0) {
-                        month.push(timey);
-                        month.push(
-                            x[i].getElementsByTagName("pred_in_ft")[0]
-                                .childNodes[0].nodeValue
-                        );
-                        dayminder = dayminder + 1;
+            if (previousDay === tideDay) {
+                currentDay.secondTide = {
+                    time: tideTime,
+                    level: Number(predInFt)
+                };
+            } else {
+                currentDay = {
+                    day: tideDay,
+                    firstTide: {
+                        time: tideTime,
+                        level: Number(predInFt)
                     }
-                } else if (dayold !== daynew) {
-                    month.push(dayme);
-                    month.push(timey);
-                    month.push(
-                        x[i].getElementsByTagName("pred_in_ft")[0].childNodes[0]
-                            .nodeValue
-                    );
-                    dayold = daynew;
-                    dayminder = dayminder + 1;
-                }
+                };
+                month.push(currentDay);
+                previousDay = tideDay;
             }
         }
     }
-
-    loadUpTheMonths(months);
+    document.getElementById("station").innerHTML = stationname;
+    renderMonthData(months);
 }
 
-function loadUpTheMonths(months) {
+function renderMonthData(months) {
     var monthNames = [
         "January",
         "February",
@@ -92,157 +68,18 @@ function loadUpTheMonths(months) {
         "December"
     ];
 
-    months.forEach(function(month, i) {
-        if (month.length > 0) {
+    months.forEach(function(monthData, i) {
+        if (monthData.length > 0) {
             var longName = monthNames[i];
             var shortName = longName.toLowerCase().substr(0, 3);
             document.getElementById(shortName).style.display = "block";
-            drawMonth(month, longName + " 2017", shortName);
+            drawMonth(monthData, longName + " 2017", shortName);
         }
     });
-}
 
-function drawMonth(theMonth, monthtext, monthy) {
-    "use strict";
-    var isEmpty = document.getElementById(monthy).innerHTML === "";
-
-    if (isEmpty === false) {
-        document.getElementById(monthy).innerHTML = "";
-    }
-
-    document
-        .getElementById(monthy)
-        .insertAdjacentHTML("beforeEnd", "<h2>" + monthtext + "</h2>");
-
-    var mlength = theMonth.length;
-
-    var z = 0;
-    for (i = 0; i < mlength; i = i + z) {
-        //loop the length of the array
-
-        if (theMonth[i + 2] >= king) {
-            //if the depth of first is greater than king
-            if (theMonth[i + 3].length > 6 && theMonth[i + 4] < king) {
-                //if there are 2 and the 2nd is less than king then do tide1
-                document
-                    .getElementById(monthy)
-                    .insertAdjacentHTML(
-                        "beforeEnd",
-                        '<div class="tide1"> <a href = "#" title ="' +
-                            theMonth[i + 1] +
-                            " " +
-                            theMonth[i + 2] +
-                            "ft" +
-                            " & " +
-                            theMonth[i + 3] +
-                            " " +
-                            theMonth[i + 4] +
-                            'ft" class="masterTooltip"> <h3>' +
-                            theMonth[i] +
-                            "</h3> </a> </div>"
-                    );
-                z = 5;
-            } else if (theMonth[i + 3].length > 6 && theMonth[i + 4] >= king) {
-                //if there are 2 and the 2nd is >king then do tide2
-                document
-                    .getElementById(monthy)
-                    .insertAdjacentHTML(
-                        "beforeEnd",
-                        '<div class="tide2"><a href = "#" title ="' +
-                            theMonth[i + 1] +
-                            " " +
-                            theMonth[i + 2] +
-                            "ft" +
-                            " & " +
-                            theMonth[i + 3] +
-                            " " +
-                            theMonth[i + 4] +
-                            'ft" class="masterTooltip"><h3>' +
-                            theMonth[i] +
-                            "</h3> </a> </div>"
-                    );
-                z = 5;
-            } else {
-                //if only 1 then do tide1
-                document
-                    .getElementById(monthy)
-                    .insertAdjacentHTML(
-                        "beforeEnd",
-                        '<div class="tide1"><a href = "#" title ="' +
-                            theMonth[i + 1] +
-                            " " +
-                            theMonth[i + 2] +
-                            'ft" class="masterTooltip"> <h3>' +
-                            theMonth[i] +
-                            "</h3> </a> </div>"
-                    );
-                z = 3;
-            }
-        } else if (theMonth[i + 2] < king && theMonth[i + 3].length > 6) {
-            //if there are 2 and the first is less than king
-
-            if (theMonth[i + 4] >= king) {
-                //if the second is greater than king do tide1
-                document
-                    .getElementById(monthy)
-                    .insertAdjacentHTML(
-                        "beforeEnd",
-                        '<div class="tide1"><a href = "#" title ="' +
-                            theMonth[i + 1] +
-                            " " +
-                            theMonth[i + 2] +
-                            "ft" +
-                            " & " +
-                            theMonth[i + 3] +
-                            " " +
-                            theMonth[i + 4] +
-                            'ft" class="masterTooltip"><h3>' +
-                            theMonth[i] +
-                            "</h3> </a> </div>"
-                    );
-                z = 5;
-            } else if (theMonth[i + 4] < king) {
-                //if the seond is less than king do plain
-                document
-                    .getElementById(monthy)
-                    .insertAdjacentHTML(
-                        "beforeEnd",
-                        '<div class="plain"><a href = "#" title ="' +
-                            theMonth[i + 1] +
-                            " " +
-                            theMonth[i + 2] +
-                            "ft" +
-                            " & " +
-                            theMonth[i + 3] +
-                            " " +
-                            theMonth[i + 4] +
-                            'ft" class="masterTooltip"><h3>' +
-                            theMonth[i] +
-                            "</h3> </div>"
-                    );
-                z = 5;
-            }
-        } else {
-            //otherwise do plain
-            document
-                .getElementById(monthy)
-                .insertAdjacentHTML(
-                    "beforeEnd",
-                    '<div class="plain"><a href = "#" title ="' +
-                        theMonth[i + 1] +
-                        " " +
-                        theMonth[i + 2] +
-                        ' ft" class="masterTooltip"><h3>' +
-                        theMonth[i] +
-                        "</h3></div>"
-                );
-            z = 3;
-        }
-    }
     $(".masterTooltip")
         .hover(
             function() {
-                // Hover over code
                 var title = $(this).attr("title");
                 $(this).data("tipText", title).removeAttr("title");
                 $('<p class="tooltip"></p>')
@@ -251,7 +88,6 @@ function drawMonth(theMonth, monthtext, monthy) {
                     .fadeIn("slow");
             },
             function() {
-                // Hover out code
                 $(this).attr("title", $(this).data("tipText"));
                 $(".tooltip").remove();
             }
@@ -261,4 +97,54 @@ function drawMonth(theMonth, monthtext, monthy) {
             var mousey = e.pageY + 10; //Get Y coordinates
             $(".tooltip").css({ top: mousey, left: mousex });
         });
+}
+
+function drawMonth(monthData, monthtext, monthy) {
+    "use strict";
+    var monthElement = document.getElementById(monthy);
+    var level = window.king;
+
+    monthElement.innerHTML = "";
+    monthElement.insertAdjacentHTML("beforeEnd", "<h2>" + monthtext + "</h2>");
+
+    var className, titleText, higherThanFirst, higherThanSecond;
+    monthData.forEach(function(dayData) {
+        higherThanFirst = dayData.firstTide.level > level;
+        if (dayData.secondTide) {
+            higherThanSecond = dayData.secondTide.level > level;
+        } else {
+            higherThanSecond = false;
+        }
+
+        if (higherThanFirst && higherThanSecond) {
+            className = "tide2";
+        } else if (higherThanFirst || higherThanSecond) {
+            className = "tide1";
+        } else {
+            className = "plain";
+        }
+
+        titleText =
+            dayData.firstTide.time + " " + dayData.firstTide.level + "ft";
+        if (dayData.secondTide) {
+            titleText =
+                titleText +
+                " &" +
+                dayData.secondTide.time +
+                " " +
+                dayData.secondTide.level +
+                "ft";
+        }
+
+        var element = monthElement.insertAdjacentHTML(
+            "beforeEnd",
+            '<div class="' +
+                className +
+                '"> <a href = "#" title ="' +
+                titleText +
+                '" class="masterTooltip"> <h3>' +
+                dayData.day +
+                "</h3> </a> </div>"
+        );
+    });
 }

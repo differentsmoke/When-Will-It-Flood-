@@ -14,7 +14,7 @@
   <script type="text/javascript">
     $(document).ready(function () {
       // Tooltip only Text
-      window.king = 1.0;
+      window.king = 2.6;
       $.get("tides/stations.json", function (stations) {
         window.lats = stations;
       });
@@ -117,15 +117,15 @@
     }
 
     function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-      var R = 6371; // Radius of the earth in km
-      var dLat = deg2rad(lat2 - lat1); // deg2rad below
+      var R = 6371; 
+      var dLat = deg2rad(lat2 - lat1);
       var dLon = deg2rad(lon2 - lon1);
       var a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2);
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      var d = R * c; // Distance in km
+      var d = R * c; 
       return d;
     }
 
@@ -159,15 +159,12 @@
     }
 
     function displayLocationElevation(location, elevator, infowindow) {
-      // Initiate the location request
       elevator.getElevationForLocations({
         'locations': [location]
       }, function (results, status) {
         infowindow.setPosition(location);
         if (status === 'OK') {
-          // Retrieve the first result
           if (results[0]) {
-            // Open the infowindow indicating the elevation at the clicked position.
             var elevateme = (3.28084 * (results[0].elevation)).toPrecision(2);
             document.getElementById("elevate").innerHTML = 'Your elevation is  ' + elevateme + ' feet.';
             madElevate(elevateme);
@@ -187,21 +184,21 @@
       <h5>By default, the highest high tides are greater than 2.8 feet. Change.</h5>
       <form action="" method="get">
         <select id="kingme" name="kingchooser">
-    <option name="#" value="#">Make a Selection</option>
-    <option name="2.6" value="2.6"> 2.6 feet</option>
-    <option name="2.8" value="2.8"> 2.8 feet</option>
-    <option name="3.0" value="3.0"> 3.0 feet</option>
-    <option name="3.2" value="3.2"> 3.2 feet</option>
-    <option name="3.4" value="3.4"> 3.4 feet</option>
-    <option name="3.6" value="3.6"> 3.6 feet</option>
-    <option name="3.8" value="3.8"> 3.8 feet</option>
-    <option name="4.0" value="4.0"> 4.0 feet</option>
-    <option name="4.2" value="4.2"> 4.2 feet</option>
-    <option name="4.4" value="4.4"> 4.4 feet</option>
-    <option name="4.6" value="4.6"> 4.6 feet</option>
-    <option name="4.8" value="4.8"> 4.8 feet</option>
-    <option name="5.0" value="5.0"> 5.0 feet</option>   
-  </select>
+          <option name="#" value="#">Make a Selection</option>
+          <option name="2.6" value="2.6"> 2.6 feet</option>
+          <option name="2.8" value="2.8"> 2.8 feet</option>
+          <option name="3.0" value="3.0"> 3.0 feet</option>
+          <option name="3.2" value="3.2"> 3.2 feet</option>
+          <option name="3.4" value="3.4"> 3.4 feet</option>
+          <option name="3.6" value="3.6"> 3.6 feet</option>
+          <option name="3.8" value="3.8"> 3.8 feet</option>
+          <option name="4.0" value="4.0"> 4.0 feet</option>
+          <option name="4.2" value="4.2"> 4.2 feet</option>
+          <option name="4.4" value="4.4"> 4.4 feet</option>
+          <option name="4.6" value="4.6"> 4.6 feet</option>
+          <option name="4.8" value="4.8"> 4.8 feet</option>
+          <option name="5.0" value="5.0"> 5.0 feet</option>   
+        </select>
         <input type="submit" />
       </form>
 
