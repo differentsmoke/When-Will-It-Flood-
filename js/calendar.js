@@ -441,18 +441,8 @@ function loadArray(xml) {
 }
 
 function loadUpTheMonths(
-    jan,
-    feb,
-    mar,
-    apr,
-    may,
-    jun,
-    jul,
-    aug,
-    sep,
-    oct,
-    nov,
-    dec
+    jan, feb, mar, apr, may, jun,
+    jul, aug, sep, oct, nov, dec
 ) {
     if (jan.length > 0) {
         document.getElementById("jan").style.display = "block";
@@ -522,9 +512,10 @@ function drawMonth(theMonth, monthtext, monthy) {
     var mlength = theMonth.length;
     console.log(theMonth);
     console.log(JSON.stringify(theMonth));
-    
+
     var z = 0;
-    for (i = 0; i < mlength; i = i + z) {
+
+    for (let i = 0; i < mlength; i = i + z) {
         //loop the length of the array
 
         if (theMonth[i + 2] >= king) {
@@ -646,5 +637,5 @@ function drawMonth(theMonth, monthtext, monthy) {
             z = 3;
         }
     }
-    jsFunction();
+    addToolTip();
 }
