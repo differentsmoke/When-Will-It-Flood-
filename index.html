@@ -18,11 +18,12 @@
     <header>
       <h1>Will it Flood?</h1>
       <h4>Enter your address in the map. A calendar of high tides for the nearest NOAA tide monitoring station will appear. Dates in blue are at highest risk. Click or roll over to see time & depth.</h4>
-      <h5>By default, the highest high tides are greater than 2.8 feet. Change.</h5>
+      
+      
       <form action="">
-        <!--TODO: Add Label for Input-->
+        <label>Highlight tides greater than </label>
         <select id="kingme" name="kingchooser">
-          <option name="#" value="#">Make a Selection</option>
+          <option name="2.5" value="2.5">2.5 feet</option>
           <option name="2.6" value="2.6"> 2.6 feet </option>
           <option name="2.8" value="2.8"> 2.8 feet </option>
           <option name="3.0" value="3.0"> 3.0 feet </option>
@@ -37,7 +38,6 @@
           <option name="4.8" value="4.8"> 4.8 feet </option>
           <option name="5.0" value="5.0"> 5.0 feet </option>
         </select>
-        <input type="submit" />
       </form>
     </header>
     <input id="pac-input" class="controls" placeholder="Enter your address">
