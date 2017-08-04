@@ -1,7 +1,5 @@
-// JavaScript Document
-
+"use strict";
 function loadArray(xml) {
-  "use strict";
   var today = new Date();
   var todayMonthNum = today.getMonth();
   var xmlDocument = xml.responseXML;
@@ -90,7 +88,6 @@ function renderMonthData(months) {
 }
 
 function drawMonth(monthData, monthtext, monthy, highest) {
-  "use strict";
   var monthElement = document.getElementById(monthy);
   var level = window.king;
 
