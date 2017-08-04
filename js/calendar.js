@@ -16,8 +16,6 @@ function loadArray(xml) {
     previousDay,
     currentDay;
 
-  console.log(stationname);
-
   for (var i = 0; i < tides.length; i = i + 1) {
     tideDate = new Date(tides[i].querySelector("date").textContent);
     tideMonth = tideDate.getMonth();

@@ -60,7 +60,6 @@ function initMap() {
     var best_dist = 999999999;
     var best_stn = null;
     for (let i = 0; i < lats.length; i++) {
-      console.log(i);
       var cur_stn = lats[i];
       var cur_dist = getDistanceFromLatLonInKm(
         cur_stn[2],
