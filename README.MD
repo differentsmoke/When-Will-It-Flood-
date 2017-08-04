@@ -1,4 +1,5 @@
 # Will It Flood?
+[![Code Climate](https://codeclimate.com/github/Code-for-Miami/When-Will-It-Flood-/badges/gpa.svg)](https://codeclimate.com/github/Code-for-Miami/When-Will-It-Flood-) [![Issue Count](https://codeclimate.com/github/Code-for-Miami/When-Will-It-Flood-/badges/issue_count.svg)](https://codeclimate.com/github/Code-for-Miami/When-Will-It-Flood-)
 
 ## What
 This application lets residents of the state of Florida enter their address and view a calendar of dates for the highest high tides, known as the King Tides, in their area. Users may adjust the height of what they wish to identify as King Tides from 2.5 feet to 5.0 feet. The default is 2.5 feet.
