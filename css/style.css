@@ -122,6 +122,14 @@ h5 {
   border: thin black solid;
 }
 
+.highest {
+  background-color: darkred;
+  padding: .5%;
+  width: 12%;
+  float: left;
+  border: thin black solid;
+}
+
 footer {
   clear: both;
 }
@@ -129,16 +137,7 @@ footer {
 footer img {
   padding: 1%;
 }
-.tooltip {
-  display: none;
-  position: absolute;
-  border: thin solid #333;
-  background-color: #161616;
-  border-radius: 5px;
-  padding: 1%;
-  color: #fff;
-  font-size: 2vw Arial;
-}
+
 
 #chooser {
   width: 25%;
@@ -199,4 +198,21 @@ a:link {
 }
 #kingchooser {
   display: none;
+}
+
+.tooltip {
+  position: absolute;
+  transition: opacity 1s;
+  opacity: 1;
+  border: thin solid #333;
+  background-color: #161616;
+  border-radius: 5px;
+  padding: 1%;
+  color: #fff;
+  font-size: 2vw Arial;
+}
+
+.hidden {
+  transition: opacity 1s;
+  opacity: 0;
 }

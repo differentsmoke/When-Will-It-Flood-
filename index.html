@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Will It Flood?</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <script async defer type="text/javascript"
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoip0ve1aHbxpGyC7cQnV6qq7zLNGjAfU&libraries=places&callback=initMap"></script>
+  <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoip0ve1aHbxpGyC7cQnV6qq7zLNGjAfU&libraries=places&callback=initMap"></script>
   <script type="text/javascript" src="js/calendar.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
 </head>
@@ -17,9 +14,9 @@
   <div id="container">
     <header>
       <h1>Will it Flood?</h1>
-      <h4>Enter your address in the map. A calendar of high tides for the nearest NOAA tide monitoring station will appear. Dates in blue are at highest risk. Click or roll over to see time & depth.</h4>
-      
-      
+      <h4>Enter your address in the map. A calendar of high tides for the nearest NOAA tide monitoring station will appear. Dates
+        in blue are at highest risk. Click or roll over to see time & depth.</h4>
+
       <form action="">
         <label>Highlight tides greater than </label>
         <select id="kingme" name="kingchooser">
@@ -44,8 +41,7 @@
     <div id="map"></div>
     <div id="infowindow-content">
       <span id="place-name" class="title"></span>
-      <br>
-      Place ID <span id="place-id"></span>
+      <br> Place ID <span id="place-id"></span>
       <br>
       <span id="place-address"></span>
     </div>
@@ -66,9 +62,10 @@
     <div id="nov"></div>
     <div id="dec"></div>
     <footer>
-      <img src="images/carta.png" width="112" height="100" alt="CARTA-FIU"/>
-      <img src="images/cfm.png"   width="160" height="100" alt="CODE FOR MIAMI"/>
+      <img src="images/carta.png" width="112" height="100" alt="CARTA-FIU" />
+      <img src="images/cfm.png" width="160" height="100" alt="CODE FOR MIAMI" />
     </footer>
+    <p id="tooltip" class="tooltip hidden"></p>
   </div>
 </body>
 </html>
