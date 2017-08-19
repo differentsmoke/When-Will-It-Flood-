@@ -1,155 +1,133 @@
-"use strict";
-function loadArray(xml) {
-  var today = new Date();
-  var todayMonthNum = today.getMonth();
-  var xmlDocument = xml.responseXML;
-  var stationname = xmlDocument.querySelector("stationname").textContent;
-  var tides = xmlDocument.querySelectorAll("item");
-  var months = [[], [], [], [], [], [], [], [], [], [], [], []];
-  var tideDate,
-    tideDay,
-    tideMonth,
-    tideTime,
-    highTide,
-    month,
-    predInFt,
-    previousDay,
-    currentDay;
+/**
+ * Creates A Month Object with the name
+ * and all the weeks of the month.
+ *
+ * @param {Number} monthNumber - the number of the month starting at 0 ex. '0 - January'.
+ * @returns {
+ *  {name: String, weeks: Week[]}
+ * }
+ */
 
-  for (var i = 0; i < tides.length; i = i + 1) {
-    tideDate = new Date(tides[i].querySelector("date").textContent);
-    tideMonth = tideDate.getMonth();
-    highTide = tides[i].querySelector("highlow").textContent === "H";
+let Month = function (monthNumber) {
+  const month = moment().month(monthNumber);
+  const start = month.clone().startOf('month').week();
+  let     end = month.clone().endOf('month').week();
+  const weeks = [];
 
-    if (tideMonth >= todayMonthNum && highTide) {
-      // If the month is equal or higher than the current month and the value is a high tide.
-      tideDay = tideDate.getDate();
-      tideTime = tides[i].querySelector("time").textContent;
-      predInFt = tides[i].querySelector("pred_in_ft").textContent;
-      month = months[tideMonth];
+  if (monthNumber === 11) end = moment().weeksInYear() + 1;
 
-      if (previousDay === tideDay) {
-        currentDay.secondTide = {
-          time: tideTime,
-          level: Number(predInFt)
-        };
-      } else {
-        currentDay = {
-          day: tideDay,
-          firstTide: {
-            time: tideTime,
-            level: Number(predInFt)
-          }
-        };
-        month.push(currentDay);
-        previousDay = tideDay;
-      }
-    }
+  for(let currentWeek = start; currentWeek <= end; currentWeek++){
+    week = new Week(monthNumber, currentWeek);
+    weeks.push(week);
   }
-  document.getElementById("station").innerHTML = stationname;
-  renderMonthData(months);
-}
 
-function renderMonthData(months) {
-  var monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
+  return {
+    name: month.format("MMMM"),
+    weeks: weeks
+  };
+};
 
-  months.forEach(function(monthData, i) {
-    if (monthData.length > 0) {
-      var allTides = monthData.reduce(function(accumulator, currentTide) {
-        accumulator.push(currentTide.firstTide.level);
-        if (currentTide.secondTide) {
-          accumulator.push(currentTide.secondTide.level);
-        }
-        return accumulator;
-      }, []);
+/**
+ * Creates a Day Object with date, and inMonth boolean in order to provide more display options.
+ *
+ * @param {Number} monthNumber - the number of the month starting at 0 ex. '0 - January'.
+ * @param {Moment} Day - Moment JS Object.
+ *
+ * @returns { {date: Number, inMonth: Boolean} }
+ */
 
-      var highestTide = Math.max.apply(this, allTides);
-      var longName = monthNames[i];
-      var shortName = longName.toLowerCase().substr(0, 3);
-      document.getElementById(shortName).style.display = "block";
-      drawMonth(monthData, longName + " 2017", shortName, highestTide);
-    }
+let Day = function (monthNumber, day) {
+  let month = moment().month(monthNumber);
+
+  return {
+    date: day.format("D"),
+    inMonth: month.isSame(day, 'month')
+  };
+};
+
+/**
+ * Creates a Week Array with all the days in that week.
+ * @param {Number} monthNumber - the number of the month starting at 0 ex. '0 - January'.
+ * @param {Number} weekNumber - the number of the week in that month.
+ * @returns { Day[] }
+ */
+let Week = function (monthNumber, WeekNumber) {
+  let days = [];
+  let month = moment().month(monthNumber);
+  let week = month.clone().week(WeekNumber);
+
+  // Create a day object for each day of the week
+  for(let weekDay = 0; weekDay < 7; weekDay++){
+    let day = week.clone().weekday(weekDay);
+    
+    days.push(new Day(monthNumber, day));
+  }
+
+  return days;
+};
+
+function buildMonth (month) {
+  let monthEl = document.createElement("div");
+  monthEl.classList.add('month');
+
+  let monthNameEl = document.createElement("div");
+  monthNameEl.classList.add('month-name');
+  monthNameEl.textContent = month.name;
+
+  monthEl.appendChild( monthNameEl );
+
+  monthEl.appendChild(
+      buildWeekDays(moment.weekdaysShort())
+  );
+
+  month.weeks.forEach( (week) => {
+    monthEl.appendChild(buildWeek(week));
   });
+
+  return monthEl;
 }
 
-function drawMonth(monthData, monthtext, monthy, highest) {
-  var monthElement = document.getElementById(monthy);
-  var level = window.king;
+function buildWeekDays (weekDays) {
+  let weekEl = document.createElement("div");
 
-  monthElement.innerHTML = "";
-  monthElement.insertAdjacentHTML("beforeEnd", "<h2>" + monthtext + "</h2>");
+  weekEl.classList.add('week-days');
+  moment.weekdaysShort().forEach( (day) => {
+    let dayEl = document.createElement("div");
 
-  var className, titleText, higherThanFirst, higherThanSecond;
-  monthData.forEach(function(dayData) {
-    higherThanFirst = dayData.firstTide.level > level;
-    if (dayData.secondTide) {
-      higherThanSecond = dayData.secondTide.level > level;
-    } else {
-      higherThanSecond = false;
-    }
-
-    var higherTide = dayData.secondTide
-      ? Math.max(dayData.firstTide.level, dayData.secondTide.level)
-      : dayData.firstTide.level;
-
-    if (higherThanFirst && higherThanSecond) {
-      className = "tide2";
-    } else if (higherThanFirst || higherThanSecond) {
-      className = "tide1";
-    } else {
-      className = "plain";
-    }
-
-    if(higherTide === highest) {
-      className = "highest";
-    }
-
-    titleText = dayData.firstTide.time + " " + dayData.firstTide.level + "ft";
-    if (dayData.secondTide) {
-      titleText =
-        titleText +
-        " &" +
-        dayData.secondTide.time +
-        " " +
-        dayData.secondTide.level +
-        "ft";
-    }
-
-    var wrapper = document.createElement("div");
-    wrapper.classList.add(className);
-    var masterTooltip = document.createElement("a");
-    masterTooltip.setAttribute("title", titleText);
-    masterTooltip.classList.add("masterTooltip");
-    masterTooltip.innerHTML = "<h3>" + dayData.day + "</h3>";
-
-    masterTooltip.addEventListener("mouseenter", function(event) {
-      var title = event.target.getAttribute("title");
-      var tooltip = document.querySelector("#tooltip");
-      var mousex = event.pageX + 20; //Get X coordinates
-      var mousey = event.pageY + 10; //Get Y coordinates
-      tooltip.textContent = title;
-      tooltip.style.top = mousey + "px";
-      tooltip.style.left = mousex + "px";
-      tooltip.classList.remove("hidden");
-    });
-
-    masterTooltip.addEventListener("mouseleave", function() {
-      tooltip.classList.add("hidden");
-    });
-    wrapper.appendChild(masterTooltip);
-    monthElement.appendChild(wrapper);
+    dayEl.classList.add('day');
+    dayEl.textContent = day;
+    weekEl.appendChild(dayEl);
   });
+
+  return weekEl;
 }
+
+function buildWeek (week) {
+  let weekEl = document.createElement("div");
+  weekEl.classList.add('week');
+
+  week.forEach( (day) => {
+    let dayEl = document.createElement("div");
+    
+    if (!day.inMonth) dayEl.classList.add('non-month');
+
+    dayEl.classList.add('day');
+    dayEl.textContent = day.date;
+    
+    weekEl.appendChild(dayEl);
+  });
+
+  return weekEl;
+}
+
+function displayCalendar (selector) {
+  const  calendarEl = document.querySelector(selector);
+  const      months = document.createDocumentFragment();
+  
+  moment.months().forEach(function(monthname, index){
+    months.appendChild(buildMonth(new Month(index)));
+  });
+  calendarEl.appendChild(months);
+}
+
+displayCalendar('#calendar');

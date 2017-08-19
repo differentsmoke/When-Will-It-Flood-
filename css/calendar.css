@@ -1,0 +1,42 @@
+.calendar {
+  display: flex;
+}
+
+.month {
+  display: flex;
+  flex: 0 1 50%;
+  flex-direction: column;
+}
+
+.month-name {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.week {
+  display: flex;
+}
+
+.week-days{
+  display: flex;
+}
+
+.week-days > .day {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+    
+
+.day{ 
+  font-size: 0.75rem;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #333;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.non-month {
+  color: #999;
+}

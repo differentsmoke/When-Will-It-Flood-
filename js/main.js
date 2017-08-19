@@ -29,12 +29,12 @@ function initMap () {
     marker.setPosition( place.geometry.location ); // Moves Marker to Location
   });
 
-  // Runs Draw Calender on Auto Complete
+  // Runs Draw Calendar on Auto Complete
   autocomplete.addListener("place_changed", function () {
     drawCalendar(map, this.getPlace())
   });
 
-  // Refreshes Calender on Tide Level Limit Change
+  // Refreshes Calendar on Tide Level Limit Change
   selector.addEventListener("change", function(event) {
     let value = event.target.value;
     window.king = Number(value);

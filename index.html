@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -7,18 +8,18 @@
   <title>Will It Flood?</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
   <link type="text/css" rel="stylesheet" href="css/style.css">
-  <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoip0ve1aHbxpGyC7cQnV6qq7zLNGjAfU&libraries=places&callback=initMap"></script>
-  <script type="text/javascript" src="js/calendar.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
+  <link type="text/css" rel="stylesheet" href="css/calendar.css">
+
 </head>
+
 <body>
   <main>
     <header>
       <div class="container">
         <h1>Will it Flood?</h1>
         <h4>
-          Enter your address in the map. A calendar of high tides for the nearest NOAA tide monitoring station will appear. Dates
-            in blue are at highest risk. Click or roll over to see time & depth.</h4>
+          Enter your address in the map. A calendar of high tides for the nearest NOAA tide monitoring station will appear. Dates in
+          blue are at highest risk. Click or roll over to see time & depth.</h4>
         <form action="">
           <label>Highlight tides greater than </label>
           <select id="kingme" name="kingchooser">
@@ -44,20 +45,9 @@
     <div id="map"></div>
     <div class="container">
       <h2 id="station"></h2>
-      <p id="madlib"></p>
-      <div id="jan"></div>
-      <div id="feb"></div>
-      <div id="mar"></div>
-      <div id="apr"></div>
-      <div id="may"></div>
-      <div id="jun"></div>
-      <div id="jul"></div>
-      <div id="aug"></div>
-      <div id="sep"></div>
-      <div id="oct"></div>
-      <div id="nov"></div>
-      <div id="dec"></div>
+      <div id="calendar"></div>
     </div>
+
     <footer>
       <div class="container">
         <div style="display: flex;align-items: center;justify-content: center;">
@@ -68,5 +58,11 @@
     </footer>
     <p id="tooltip" class="tooltip hidden"></p>
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script type="text/javascript" src="js/parseXML.js"></script>
+  <script type="text/javascript" src="js/calendar.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+  <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoip0ve1aHbxpGyC7cQnV6qq7zLNGjAfU&libraries=places&callback=initMap"></script>
 </body>
+
 </html>
